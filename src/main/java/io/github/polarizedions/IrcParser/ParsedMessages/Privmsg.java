@@ -40,8 +40,7 @@ public class Privmsg extends ParsedMessage {
         boolean chanMsg = to != originNetwork.getNetworkConfig().nick;
         if (chanMsg) {
             originNetwork.send("PRIVMSG " + to + " :" + message);
-        }
-        else {
+        } else {
             originNetwork.send("PRIVMSG " + from.nick + " :" + message);
         }
     }

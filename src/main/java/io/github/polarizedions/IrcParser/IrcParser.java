@@ -30,14 +30,14 @@ import java.util.stream.Stream;
  * Licence: MIT - https://github.com/kiwiirc/irc-framework/blob/bc564f1509cc9e02bb4ef9fb9712a1eb1952b4ea/LICENSE.txt
  */
 public class IrcParser {
-    private Network network;
     private static final Pattern PARSE_REGEX = Pattern.compile("^(?:@([^ ]+) )?(?::((?:(?:([^\\s!@]+)(?:!([^\\s@]+))?)@)?(\\S+)) )?((?:[a-zA-Z]+)|(?:[0-9]{3}))(?: ([^:].*?))?(?: :(.*))?$", Pattern.CASE_INSENSITIVE);
+    private Network network;
 
     public IrcParser(Network network) {
         this.network = network;
     }
 
-    public ParsedLine parseLine (String line) {
+    public ParsedLine parseLine(String line) {
         line = line.trim();
         Matcher m = PARSE_REGEX.matcher(line);
 
@@ -55,12 +55,12 @@ public class IrcParser {
         String ident = m.group(4) == null ? "" : m.group(4);
         String hostname = m.group(5) == null ? "" : m.group(5);
         String command = m.group(6);
-        String[] tmpParams  = m.group(7) == null ? new String[0] : m.group(7).split(" +");
+        String[] tmpParams = m.group(7) == null ? new String[0] : m.group(7).split(" +");
 
 
         // Add the trailing param to the params list
         if (m.group(8) != null) {
-            tmpParams =  Stream.concat(Arrays.stream(tmpParams), Arrays.stream(new String[] {m.group(8)})).toArray(String[]::new);
+            tmpParams = Stream.concat(Arrays.stream(tmpParams), Arrays.stream(new String[]{m.group(8)})).toArray(String[]::new);
         }
 
         String[] params = tmpParams;

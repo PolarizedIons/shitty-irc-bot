@@ -23,7 +23,7 @@ import java.util.HashMap;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public class Unparsed extends ParsedMessage{
+public class Unparsed extends ParsedMessage {
     public final HashMap<String, String> tags;
     public final String prefix;
     public final String nick;

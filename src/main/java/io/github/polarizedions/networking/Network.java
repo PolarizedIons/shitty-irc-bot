@@ -34,9 +34,6 @@ public class Network {
         parser = new IrcParser(this);
 
 
-
-
-
     }
 
     public void connect() {
@@ -66,7 +63,10 @@ public class Network {
         try {
             out.write("QUIT :Bye!".getBytes());
             out.flush();
-            try { Thread.sleep(50); } catch (InterruptedException e) {}
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+            }
             socket.close();
             in.close();
             out.close();

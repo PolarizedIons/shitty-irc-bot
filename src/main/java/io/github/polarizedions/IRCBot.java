@@ -15,7 +15,7 @@ public class IRCBot {
         logger.info("Starting irc bot.");
 
         for (Object nwConfig : config.networkConfigs) {
-            networkManager.addNetwork((NetworkConfig)nwConfig);
+            networkManager.addNetwork((NetworkConfig) nwConfig);
         }
     }
 

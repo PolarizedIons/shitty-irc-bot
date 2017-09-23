@@ -1,7 +1,6 @@
 package io.github.polarizedions.IrcParser.ParsedMessages;
 
 import io.github.polarizedions.IrcParser.ParsedLine;
-import io.github.polarizedions.Logger;
 import io.github.polarizedions.networking.Network;
 
 import java.util.HashMap;

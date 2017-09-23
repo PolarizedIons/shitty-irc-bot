@@ -1,6 +1,5 @@
 package io.github.polarizedions.BotCommands;
 
-import io.github.polarizedions.IrcParser.ParsedLine;
 import io.github.polarizedions.IrcParser.ParsedMessages.Command;
 
 /**
@@ -21,5 +20,6 @@ import io.github.polarizedions.IrcParser.ParsedMessages.Command;
  **/
 public interface IBotCommandHandler {
     void handle(Command command);
+
     String getCommand();
 }

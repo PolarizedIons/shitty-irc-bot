@@ -20,9 +20,12 @@ import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 public interface IIrcEventHandler {
+    static String[] getEventNames() {
+        return new String[0];
+    }
+
     void handle(ParsedMessage line);
     default Class getParsedMessageType() {
         return Unparsed.class;
-    };
-    static String[] getEventNames() { return new String[0]; }
+    }
 }

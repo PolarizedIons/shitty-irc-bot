@@ -2,7 +2,6 @@ package io.github.polarizedions.IrcParser;
 
 import io.github.polarizedions.IrcEvents.IIrcEventHandler;
 import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
-import io.github.polarizedions.Logger;
 import io.github.polarizedions.networking.NetworkCapsHandler;
 import org.reflections.Reflections;
 
@@ -95,7 +94,7 @@ public class Handlers {
         for (IIrcEventHandler handler : handlers) {
             ParsedMessage parsedMessageInstance;
             try {
-                parsedMessageInstance = (ParsedMessage)handler.getParsedMessageType().getConstructor(ParsedLine.class).newInstance(line);
+                parsedMessageInstance = (ParsedMessage) handler.getParsedMessageType().getConstructor(ParsedLine.class).newInstance(line);
             } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 continue;
             }

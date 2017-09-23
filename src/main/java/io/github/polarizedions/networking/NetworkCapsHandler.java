@@ -1,10 +1,8 @@
 package io.github.polarizedions.networking;
 
 import io.github.polarizedions.IrcEvents.IIrcEventHandler;
-import io.github.polarizedions.IrcParser.ParsedLine;
 import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
-import io.github.polarizedions.Logger;
 
 import java.util.ArrayList;
 
@@ -25,21 +23,24 @@ import java.util.ArrayList;
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 public class NetworkCapsHandler implements IIrcEventHandler {
+    public static String[] getEventNames() {
+        return new String[]{"CAP"};
+    }
+
     @Override
     public void handle(ParsedMessage parsedMessage) {
-        Unparsed line = (Unparsed)parsedMessage;
+        Unparsed line = (Unparsed) parsedMessage;
 
         Network network = line.originNetwork;
         NetworkCapabilities networkCaps = network.getNetworkCapabilities();
         switch (line.params[1]) {
             case "LS":
-                String[] supportedCaps = line.params[line.params.length -1].split(" ");
+                String[] supportedCaps = line.params[line.params.length - 1].split(" ");
                 ArrayList<String> requestedCaps = networkCaps.getRequestedCaps();
                 for (String cap : supportedCaps) {
                     if (requestedCaps.contains(cap)) {
                         networkCaps.addSupportedCap(cap);
-                    }
-                    else {
+                    } else {
                         requestedCaps.remove(cap);
                     }
                 }
@@ -48,8 +49,7 @@ public class NetworkCapsHandler implements IIrcEventHandler {
                 if (!line.params[2].equals("*")) { // Last line of CAP LS
                     if (requestedCaps.size() == 0) {
                         network.send("CAP END");
-                    }
-                    else {
+                    } else {
                         network.send("CAP REQ :" + String.join(" ", requestedCaps));
                     }
                 }
@@ -71,9 +71,5 @@ public class NetworkCapsHandler implements IIrcEventHandler {
             default:
                 network.send("CAP END");
         }
-    }
-
-    public static String[] getEventNames() {
-        return new String[] {"CAP"};
     }
 }

@@ -27,6 +27,7 @@ import java.util.HashMap;
 public class Numerics {
 
     private static HashMap<String, String> numericMap;
+
     private static void initMap() {
         numericMap = new HashMap<>();
         numericMap.put("001", "RPL_WELCOME");
@@ -182,6 +183,7 @@ public class Numerics {
     public static String getMappedName(int numeric) {
         return getMappedName(String.format("%03d", numeric));
     }
+
     public static String getMappedName(String numeric) {
         if (numericMap == null) {
             initMap();

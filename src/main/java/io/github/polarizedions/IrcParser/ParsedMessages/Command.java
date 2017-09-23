@@ -1,9 +1,7 @@
 package io.github.polarizedions.IrcParser.ParsedMessages;
 
-import io.github.polarizedions.Logger;
 import io.github.polarizedions.config.ConfigHandler;
 import io.github.polarizedions.networking.Network;
-import sun.rmi.runtime.Log;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,8 +47,7 @@ public class Command extends ParsedMessage {
         boolean chanMsg = !to.equals(originNetwork.getNetworkConfig().nick);
         if (chanMsg) {
             originNetwork.send("PRIVMSG " + to + " :" + message);
-        }
-        else {
+        } else {
             originNetwork.send("PRIVMSG " + from.nick + " :" + message);
         }
     }

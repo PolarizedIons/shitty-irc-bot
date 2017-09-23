@@ -33,6 +33,10 @@ import java.util.Set;
 public class CommandHandler implements IIrcEventHandler {
     private HashMap<String, IBotCommandHandler> botCommandHandlers;
 
+    public static String[] getEventNames() {
+        return new String[]{"PRIVMSG"};
+    }
+
     private void initHandlers() {
         botCommandHandlers = new HashMap<>();
 //
@@ -46,7 +50,7 @@ public class CommandHandler implements IIrcEventHandler {
             initHandlers();
         }
 
-        Privmsg msg = (Privmsg)line;
+        Privmsg msg = (Privmsg) line;
         Config config = ConfigHandler.getConfig();
 
         if (msg.message.startsWith(config.botPrefix)) {
@@ -94,9 +98,5 @@ public class CommandHandler implements IIrcEventHandler {
     @Override
     public Class getParsedMessageType() {
         return Privmsg.class;
-    }
-
-    public static String[] getEventNames() {
-        return new String[] {"PRIVMSG"};
     }
 }

@@ -1,7 +1,5 @@
 package io.github.polarizedions.IrcParser.ParsedMessages;
 
-import java.util.regex.Pattern;
-
 /**
  * Copyright 2017 PolarizedIons
  * <p>

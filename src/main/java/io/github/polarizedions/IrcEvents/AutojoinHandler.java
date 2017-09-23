@@ -1,6 +1,5 @@
 package io.github.polarizedions.IrcEvents;
 
-import io.github.polarizedions.IrcParser.ParsedLine;
 import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
 import io.github.polarizedions.Logger;
@@ -24,6 +23,10 @@ import io.github.polarizedions.networking.Network;
  **/
 public class AutojoinHandler implements IIrcEventHandler {
 
+    public static String[] getEventNames() {
+        return new String[]{"RPL_ENDOFMOTD", "ERR_NOMOTD"};
+    }
+
     @Override
     public void handle(ParsedMessage parsedMessage) {
         Unparsed line = (Unparsed) parsedMessage;
@@ -33,9 +36,5 @@ public class AutojoinHandler implements IIrcEventHandler {
             Logger.getLogger("AutojoinHandler").debug("Autojoining " + autojoinChannels);
             nw.send("JOIN " + autojoinChannels);
         }
-    }
-
-    public static String[] getEventNames() {
-        return new String[] {"RPL_ENDOFMOTD", "ERR_NOMOTD"};
     }
 }
