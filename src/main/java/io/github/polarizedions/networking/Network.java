@@ -68,6 +68,8 @@ public class Network {
             out.flush();
             try { Thread.sleep(50); } catch (InterruptedException e) {}
             socket.close();
+            in.close();
+            out.close();
         } catch (IOException e) {
             logger.error("Error closing socket of " + this.toString());
             e.printStackTrace();
