@@ -1,0 +1,15 @@
+package io.github.stepie22.config;
+
+import java.util.List;
+
+public class Config {
+    public List networkConfigs;
+    public int logLevel;
+    public String loginUser;
+    public String loginPass;
+    public String nickServAuth;
+    public String SASLAuth;
+    public String botPrefix;
+}
+
+
