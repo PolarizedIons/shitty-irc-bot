@@ -1,6 +1,7 @@
 package io.github.polarizedions.BotCommands;
 
 import io.github.polarizedions.IrcParser.ParsedLine;
+import io.github.polarizedions.IrcParser.ParsedMessages.Command;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -20,8 +21,8 @@ import io.github.polarizedions.IrcParser.ParsedLine;
  **/
 public class PingCommandHandler implements IBotCommandHandler {
     @Override
-    public void handle(ParsedLine line) {
-        line.originNetwork.send("PRIVMSG " + line.params[0] + " :" + line.nick + ": Pong!");
+    public void handle(Command command) {
+        command.reply(command.from.nick + ": Pong!");
     }
 
     @Override

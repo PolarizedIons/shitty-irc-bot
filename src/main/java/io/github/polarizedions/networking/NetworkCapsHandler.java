@@ -2,6 +2,8 @@ package io.github.polarizedions.networking;
 
 import io.github.polarizedions.IrcEvents.IIrcEventHandler;
 import io.github.polarizedions.IrcParser.ParsedLine;
+import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
+import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
 import io.github.polarizedions.Logger;
 
 import java.util.ArrayList;
@@ -24,9 +26,9 @@ import java.util.ArrayList;
  **/
 public class NetworkCapsHandler implements IIrcEventHandler {
     @Override
-    public void handle(ParsedLine line) {
-        Logger logger = Logger.getLogger("NetworkCaps");
-        logger.debug(line.toString());
+    public void handle(ParsedMessage parsedMessage) {
+        Unparsed line = (Unparsed)parsedMessage;
+
         Network network = line.originNetwork;
         NetworkCapabilities networkCaps = network.getNetworkCapabilities();
         switch (line.params[1]) {

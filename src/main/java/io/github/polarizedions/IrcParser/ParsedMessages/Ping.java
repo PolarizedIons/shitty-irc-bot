@@ -1,8 +1,10 @@
-package io.github.polarizedions.IrcEvents;
+package io.github.polarizedions.IrcParser.ParsedMessages;
 
 import io.github.polarizedions.IrcParser.ParsedLine;
-import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
-import io.github.polarizedions.IrcParser.ParsedMessages.Ping;
+import io.github.polarizedions.Logger;
+import io.github.polarizedions.networking.Network;
+
+import java.util.HashMap;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -20,17 +22,27 @@ import io.github.polarizedions.IrcParser.ParsedMessages.Ping;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public class PingHandler implements IIrcEventHandler {
-    public void handle(ParsedMessage ping) {
-        ((Ping)ping).pong();
+public class Ping extends ParsedMessage {
+    public final String pingData;
+    public final HashMap<String, String> tags;
+    public final Network originNetwork;
+
+    public Ping(ParsedLine line) {
+        pingData = String.join(" ", line.params);
+        tags = line.tags;
+        originNetwork = line.originNetwork;
+    }
+
+    public void pong() {
+        originNetwork.send("PONG :" + pingData);
     }
 
     @Override
-    public Class getParsedMessageType() {
-        return Ping.class;
-    }
-
-    public static String[] getEventNames() {
-        return new String[] {"PING"};
+    public String toString() {
+        return "Ping{" +
+                "pingData='" + pingData + '\'' +
+                ", tags=" + tags +
+                ", originNetwork=" + originNetwork +
+                '}';
     }
 }

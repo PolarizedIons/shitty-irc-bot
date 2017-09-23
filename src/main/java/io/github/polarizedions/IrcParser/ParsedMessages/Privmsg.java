@@ -1,8 +1,9 @@
-package io.github.polarizedions.BotCommands;
+package io.github.polarizedions.IrcParser.ParsedMessages;
 
 import io.github.polarizedions.IrcParser.ParsedLine;
-import io.github.polarizedions.IrcParser.ParsedMessages.Command;
-import io.github.polarizedions.Logger;
+import io.github.polarizedions.networking.Network;
+
+import java.util.HashMap;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -20,15 +21,39 @@ import io.github.polarizedions.Logger;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public class Mimic implements IBotCommandHandler {
-    @Override
-    public void handle(Command command) {
-        Logger.getLogger("Mimic command").debug(command);
-        command.reply("> " + String.join(" ", command.args));
+public class Privmsg extends ParsedMessage {
+    public final User from;
+    public final String to;
+    public final String message;
+    public final HashMap<String, String> tags;
+    public final Network originNetwork;
+
+    public Privmsg(ParsedLine line) {
+        from = new User(line.nick, line.ident, line.hostname);
+        to = line.params[0];
+        message = line.params[1];
+        tags = line.tags;
+        originNetwork = line.originNetwork;
+    }
+
+    public void reply(String message) {
+        boolean chanMsg = to != originNetwork.getNetworkConfig().nick;
+        if (chanMsg) {
+            originNetwork.send("PRIVMSG " + to + " :" + message);
+        }
+        else {
+            originNetwork.send("PRIVMSG " + from.nick + " :" + message);
+        }
     }
 
     @Override
-    public String getCommand() {
-        return "mimic";
+    public String toString() {
+        return "Privmsg{" +
+                "from=" + from +
+                ", to='" + to + '\'' +
+                ", message='" + message + '\'' +
+                ", tags=" + tags +
+                ", originNetwork=" + originNetwork +
+                '}';
     }
 }

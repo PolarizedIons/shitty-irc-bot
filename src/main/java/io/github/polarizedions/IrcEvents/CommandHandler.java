@@ -1,8 +1,9 @@
 package io.github.polarizedions.IrcEvents;
 
 import io.github.polarizedions.BotCommands.IBotCommandHandler;
-import io.github.polarizedions.BotCommands.PingCommandHandler;
-import io.github.polarizedions.IrcParser.ParsedLine;
+import io.github.polarizedions.IrcParser.ParsedMessages.Command;
+import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
+import io.github.polarizedions.IrcParser.ParsedMessages.Privmsg;
 import io.github.polarizedions.Logger;
 import io.github.polarizedions.config.Config;
 import io.github.polarizedions.config.ConfigHandler;
@@ -40,19 +41,18 @@ public class CommandHandler implements IIrcEventHandler {
     }
 
     @Override
-    public void handle(ParsedLine line) {
+    public void handle(ParsedMessage line) {
         if (botCommandHandlers == null) {
             initHandlers();
         }
 
-        Logger logger = Logger.getLogger("CommandHandler");
+        Privmsg msg = (Privmsg)line;
         Config config = ConfigHandler.getConfig();
 
-        if (line.params[1].startsWith(config.botPrefix)) {
-            logger.debug("GET: " + line.params[1].split(" ")[0].replaceFirst(config.botPrefix,"").toLowerCase());
-            IBotCommandHandler commandHandler = botCommandHandlers.get(line.params[1].split(" ")[0].replaceFirst(config.botPrefix,"").toLowerCase());
+        if (msg.message.startsWith(config.botPrefix)) {
+            IBotCommandHandler commandHandler = botCommandHandlers.get(msg.message.split(" ")[0].replaceFirst(config.botPrefix, "").toLowerCase());
             if (commandHandler != null) {
-                commandHandler.handle(line);
+                commandHandler.handle(new Command(msg));
             }
         }
     }
@@ -89,6 +89,11 @@ public class CommandHandler implements IIrcEventHandler {
             Logger.getLogger("CommandHandler").debug("Adding " + cls.getName() + " to command " + command);
             botCommandHandlers.put(command, commandHandlerInstance);
         }
+    }
+
+    @Override
+    public Class getParsedMessageType() {
+        return Privmsg.class;
     }
 
     public static String[] getEventNames() {

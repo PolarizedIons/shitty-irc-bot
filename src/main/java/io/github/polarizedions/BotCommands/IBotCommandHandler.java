@@ -1,6 +1,7 @@
 package io.github.polarizedions.BotCommands;
 
 import io.github.polarizedions.IrcParser.ParsedLine;
+import io.github.polarizedions.IrcParser.ParsedMessages.Command;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -19,6 +20,6 @@ import io.github.polarizedions.IrcParser.ParsedLine;
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 public interface IBotCommandHandler {
-    void handle(ParsedLine line);
+    void handle(Command command);
     String getCommand();
 }
