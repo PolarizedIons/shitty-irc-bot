@@ -11,24 +11,10 @@ public class IRCBot {
     public static final IRCBot bot = new IRCBot();
     public final NetworkManager networkManager = NetworkManager.instance;
     public final Logger logger = Logger.getLogger("Bot");
-    public final Config config;
+    public final Config config = ConfigHandler.getConfig();
 
     private IRCBot() {
         logger.info("Starting irc bot.");
-        ConfigHandler.loadConfig();
-        if (ConfigHandler.isDefault()) {
-            logger.info("A default config file was created, you can change things now, and press enter to reload when done");
-            try {
-                System.in.read();
-            } catch (IOException e) {
-                logger.error("Error reading key");
-                e.printStackTrace();
-            }
-
-            ConfigHandler.loadConfig();
-        }
-
-        config = ConfigHandler.getConfig();
 
         for (Object nwConfig : config.networkConfigs) {
             networkManager.addNetwork((NetworkConfig)nwConfig);
