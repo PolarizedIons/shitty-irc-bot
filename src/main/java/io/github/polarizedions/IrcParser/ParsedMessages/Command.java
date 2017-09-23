@@ -1,5 +1,6 @@
 package io.github.polarizedions.IrcParser.ParsedMessages;
 
+import io.github.polarizedions.IrcParser.ParsedLine;
 import io.github.polarizedions.config.ConfigHandler;
 import io.github.polarizedions.networking.Network;
 
@@ -30,6 +31,10 @@ public class Command extends ParsedMessage {
     public final String[] args;
     public final HashMap<String, String> tags;
     public final Network originNetwork;
+
+    public Command(ParsedLine line) {
+        this(new Privmsg(line));
+    }
 
     public Command(Privmsg msg) {
         from = msg.from;
