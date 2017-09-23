@@ -33,13 +33,17 @@ public class Network {
         this.networkConfig = networkConfig;
         logger = Logger.getLogger(String.format("Network(%s)", networkConfig.host));
         parser = new IrcParser(this);
-        networkCapabilities = new NetworkCapabilities();
 
         // TODO: this is temp
         networkCapabilities.requestCap("userhost-in-names");
         networkCapabilities.requestCap("multi-prefix");
         networkCapabilities.requestCap("nonexistant");
 
+
+    }
+
+    public void connect() {
+        networkCapabilities = new NetworkCapabilities();
         try {
             socket = new Socket(networkConfig.host, networkConfig.port);
             out = new BufferedOutputStream(socket.getOutputStream());

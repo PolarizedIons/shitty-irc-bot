@@ -74,4 +74,16 @@ public class NetworkManager {
 
         return nw;
     }
+
+    public void connectAll() {
+        for (Network nw : getNetworks()) {
+            nw.connect();
+        }
+    }
+
+    public void disconnectAll() {
+        for (Network nw : getNetworks()) {
+            nw.disconnect();
+        }
+    }
 }

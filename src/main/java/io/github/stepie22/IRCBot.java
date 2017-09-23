@@ -25,4 +25,8 @@ public class IRCBot {
         config.networkConfigs.add(nwConfig);
         networkManager.addNetwork(nwConfig);
     }
+
+    public void start() {
+        networkManager.connectAll();
+    }
 }
