@@ -1,4 +1,4 @@
-package io.github.stepie22.config;
+package io.github.polarizedions.config;
 
 public class NetworkConfig {
     public String host;

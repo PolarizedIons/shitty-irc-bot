@@ -1,6 +1,6 @@
-package io.github.stepie22.BotCommands;
+package io.github.polarizedions.BotCommands;
 
-import io.github.stepie22.IrcParser.ParsedLine;
+import io.github.polarizedions.IrcParser.ParsedLine;
 
 /**
  * Copyright 2017 PolarizedIons

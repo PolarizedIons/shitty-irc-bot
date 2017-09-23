@@ -1,11 +1,10 @@
-package io.github.stepie22.networking;
+package io.github.polarizedions.networking;
 
-import io.github.stepie22.IrcEvents.IIrcEventHandler;
-import io.github.stepie22.IrcParser.ParsedLine;
-import io.github.stepie22.Logger;
+import io.github.polarizedions.IrcEvents.IIrcEventHandler;
+import io.github.polarizedions.IrcParser.ParsedLine;
+import io.github.polarizedions.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -65,5 +64,9 @@ public class NetworkCapsHandler implements IIrcEventHandler {
             default:
                 network.send("CAP END");
         }
+    }
+
+    public static String[] getEventNames() {
+        return new String[] {"CAP"};
     }
 }

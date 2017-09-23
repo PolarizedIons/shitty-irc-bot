@@ -1,4 +1,4 @@
-package io.github.stepie22;
+package io.github.polarizedions;
 
 import java.util.Calendar;
 import java.util.HashMap;

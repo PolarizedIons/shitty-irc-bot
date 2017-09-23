@@ -1,11 +1,11 @@
-package io.github.stepie22.IrcEvents;
+package io.github.polarizedions.IrcEvents;
 
-import io.github.stepie22.BotCommands.IBotCommandHandler;
-import io.github.stepie22.BotCommands.PingCommandHandler;
-import io.github.stepie22.IrcParser.ParsedLine;
-import io.github.stepie22.Logger;
-import io.github.stepie22.config.Config;
-import io.github.stepie22.config.ConfigHandler;
+import io.github.polarizedions.BotCommands.IBotCommandHandler;
+import io.github.polarizedions.BotCommands.PingCommandHandler;
+import io.github.polarizedions.IrcParser.ParsedLine;
+import io.github.polarizedions.Logger;
+import io.github.polarizedions.config.Config;
+import io.github.polarizedions.config.ConfigHandler;
 
 import java.util.HashMap;
 
@@ -50,5 +50,9 @@ public class CommandHandler implements IIrcEventHandler {
                 commandHandler.handle(line);
             }
         }
+    }
+
+    public static String[] getEventNames() {
+        return new String[] {"PRIVMSG"};
     }
 }

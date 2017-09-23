@@ -1,7 +1,6 @@
-package io.github.stepie22.IrcParser;
+package io.github.polarizedions.IrcParser;
 
-import io.github.stepie22.config.Config;
-import io.github.stepie22.networking.Network;
+import io.github.polarizedions.networking.Network;
 
 import java.util.Arrays;
 import java.util.HashMap;

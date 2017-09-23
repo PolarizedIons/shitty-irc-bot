@@ -1,12 +1,9 @@
-package io.github.stepie22.IrcParser;
+package io.github.polarizedions.IrcParser;
 
-import io.github.stepie22.networking.Network;
+import io.github.polarizedions.networking.Network;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.stream.Stream;
 
 public class ParsedLine {
     public final HashMap<String, String> tags;

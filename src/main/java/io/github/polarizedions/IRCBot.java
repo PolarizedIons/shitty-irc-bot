@@ -1,11 +1,9 @@
-package io.github.stepie22;
+package io.github.polarizedions;
 
-import io.github.stepie22.config.Config;
-import io.github.stepie22.config.ConfigHandler;
-import io.github.stepie22.config.NetworkConfig;
-import io.github.stepie22.networking.NetworkManager;
-
-import java.io.IOException;
+import io.github.polarizedions.config.Config;
+import io.github.polarizedions.config.ConfigHandler;
+import io.github.polarizedions.config.NetworkConfig;
+import io.github.polarizedions.networking.NetworkManager;
 
 public class IRCBot {
     public static final IRCBot bot = new IRCBot();

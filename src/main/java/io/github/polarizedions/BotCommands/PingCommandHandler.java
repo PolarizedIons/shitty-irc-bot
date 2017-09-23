@@ -1,7 +1,6 @@
-package io.github.stepie22.IrcEvents;
+package io.github.polarizedions.BotCommands;
 
-import io.github.stepie22.IrcParser.ParsedLine;
-import io.github.stepie22.networking.Network;
+import io.github.polarizedions.IrcParser.ParsedLine;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -19,6 +18,9 @@ import io.github.stepie22.networking.Network;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public interface IIrcEventHandler {
-    void handle(ParsedLine line);
+public class PingCommandHandler implements IBotCommandHandler {
+    @Override
+    public void handle(ParsedLine line) {
+        line.originNetwork.send("PRIVMSG " + line.params[0] + " :" + line.nick + ": Pong!");
+    }
 }

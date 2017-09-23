@@ -1,8 +1,8 @@
-package io.github.stepie22.config;
+package io.github.polarizedions.config;
 
 import com.esotericsoftware.yamlbeans.YamlReader;
 import com.esotericsoftware.yamlbeans.YamlWriter;
-import io.github.stepie22.Logger;
+import io.github.polarizedions.Logger;
 
 import java.io.*;
 import java.util.ArrayList;

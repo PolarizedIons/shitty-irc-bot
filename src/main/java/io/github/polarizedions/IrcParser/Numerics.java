@@ -1,4 +1,4 @@
-package io.github.stepie22.IrcParser;
+package io.github.polarizedions.IrcParser;
 
 /**
  * Copyright 2017 PolarizedIons

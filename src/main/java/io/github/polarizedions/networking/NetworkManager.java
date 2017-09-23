@@ -1,8 +1,7 @@
-package io.github.stepie22.networking;
+package io.github.polarizedions.networking;
 
-import io.github.stepie22.Logger;
-import io.github.stepie22.config.Config;
-import io.github.stepie22.config.NetworkConfig;
+import io.github.polarizedions.Logger;
+import io.github.polarizedions.config.NetworkConfig;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 

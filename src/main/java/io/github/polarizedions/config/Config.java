@@ -1,4 +1,4 @@
-package io.github.stepie22.config;
+package io.github.polarizedions.config;
 
 import java.util.List;
 

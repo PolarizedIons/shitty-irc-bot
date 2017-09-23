@@ -1,13 +1,12 @@
-package io.github.stepie22.networking;
+package io.github.polarizedions.networking;
 
 
-import io.github.stepie22.IrcParser.Handlers;
-import io.github.stepie22.IrcParser.IrcParser;
-import io.github.stepie22.IrcParser.Numerics;
-import io.github.stepie22.IrcParser.ParsedLine;
-import io.github.stepie22.Logger;
-import io.github.stepie22.config.Config;
-import io.github.stepie22.config.NetworkConfig;
+import io.github.polarizedions.IrcParser.Handlers;
+import io.github.polarizedions.IrcParser.IrcParser;
+import io.github.polarizedions.IrcParser.Numerics;
+import io.github.polarizedions.IrcParser.ParsedLine;
+import io.github.polarizedions.Logger;
+import io.github.polarizedions.config.NetworkConfig;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -34,16 +33,21 @@ public class Network {
         logger = Logger.getLogger(String.format("Network(%s)", networkConfig.host));
         parser = new IrcParser(this);
 
-        // TODO: this is temp
-        networkCapabilities.requestCap("userhost-in-names");
-        networkCapabilities.requestCap("multi-prefix");
-        networkCapabilities.requestCap("nonexistant");
+
+
 
 
     }
 
     public void connect() {
         networkCapabilities = new NetworkCapabilities();
+
+// TODO: this is temp
+        networkCapabilities.requestCap("userhost-in-names");
+        networkCapabilities.requestCap("multi-prefix");
+        networkCapabilities.requestCap("nonexistant");
+
+
         try {
             socket = new Socket(networkConfig.host, networkConfig.port);
             out = new BufferedOutputStream(socket.getOutputStream());
@@ -70,6 +74,10 @@ public class Network {
         }
     }
 
+    public boolean isConnected() {
+        return socket != null && in != null && out != null && socket.isConnected();
+    }
+
     public void send(String text) {
         outBuffer.add(text);
     }
@@ -79,6 +87,9 @@ public class Network {
 //    }
 
     protected void sendFromBuffer() {
+        if (!isConnected()) {
+            return;
+        }
         long msgDelay = 1L / MESSAGE_RATELIMIT * 1000L;
         int queueSize = outBuffer.size(); // This is just to make sure we don't just keep sending more data as more is added, creating a possible large loop
         for (int i = 0; i < queueSize; i++) {
@@ -99,6 +110,9 @@ public class Network {
     }
 
     protected void recvToBuffer() {
+        if (!isConnected()) {
+            return;
+        }
         try {
             if (in.available() > 0) {
                 byte[] tmp = new byte[SOCKET_READ_BUFFER_SIZE];

@@ -1,4 +1,4 @@
-package io.github.stepie22.networking;
+package io.github.polarizedions.networking;
 
 import java.util.ArrayList;
 

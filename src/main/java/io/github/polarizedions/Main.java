@@ -1,6 +1,4 @@
-package io.github.stepie22;
-
-import io.github.stepie22.networking.Network;
+package io.github.polarizedions;
 
 public class Main {
 

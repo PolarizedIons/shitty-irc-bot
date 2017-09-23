@@ -1,14 +1,16 @@
-package io.github.stepie22.IrcParser;
+package io.github.polarizedions.IrcParser;
 
-import io.github.stepie22.IrcEvents.AutojoinHandler;
-import io.github.stepie22.IrcEvents.CommandHandler;
-import io.github.stepie22.IrcEvents.IIrcEventHandler;
-import io.github.stepie22.networking.NetworkCapsHandler;
-import io.github.stepie22.IrcEvents.PingHandler;
+import io.github.polarizedions.IrcEvents.IIrcEventHandler;
+import io.github.polarizedions.Logger;
+import io.github.polarizedions.networking.NetworkCapsHandler;
+import org.reflections.Reflections;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -33,13 +35,44 @@ public class Handlers {
         handlerMap = new HashMap<>();
 
         // TODO: addHandler calls here
-        addHandler("PING", new PingHandler());
-
-        AutojoinHandler autojoinHandler = new AutojoinHandler();
-        addHandler("RPL_ENDOFMOTD", autojoinHandler);
-        addHandler("ERR_NOMOTD", autojoinHandler);
+        loadIrcEventHandlers();
         addHandler("CAP", new NetworkCapsHandler());
-        addHandler("PRIVMSG", new CommandHandler());
+    }
+
+    private static void loadIrcEventHandlers() {
+        Reflections reflections = new Reflections("io.github.polarizedions.IrcEvents");
+        Set<Class<? extends IIrcEventHandler>> classes = reflections.getSubTypesOf(IIrcEventHandler.class);
+        for (Class<? extends IIrcEventHandler> cls : classes) {
+            String[] eventNames;
+            try {
+                Method getEventNamesMethod = cls.getMethod("getEventNames");
+                eventNames = (String[]) getEventNamesMethod.invoke(null);
+            } catch (NoSuchMethodException e) {
+                continue;
+            } catch (IllegalAccessException e) {
+                continue;
+            } catch (InvocationTargetException e) {
+                continue;
+            }
+
+            if (eventNames == null || eventNames.length == 0) {
+                continue;
+            }
+
+            IIrcEventHandler handlerInstance;
+            try {
+                handlerInstance = cls.newInstance();
+            } catch (InstantiationException e) {
+                continue;
+            } catch (IllegalAccessException e) {
+                continue;
+            }
+
+            for (String eventName : eventNames) {
+                Logger.getLogger("Handlers").debug("Adding " + cls.getName() + " to event " + eventName);
+                addHandler(eventName, handlerInstance);
+            }
+        }
     }
 
     public static void addHandler(String numeric, IIrcEventHandler handler) {

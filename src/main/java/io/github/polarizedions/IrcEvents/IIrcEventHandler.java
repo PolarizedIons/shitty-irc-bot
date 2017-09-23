@@ -1,8 +1,6 @@
-package io.github.stepie22.IrcEvents;
+package io.github.polarizedions.IrcEvents;
 
-import io.github.stepie22.IrcParser.ParsedLine;
-import io.github.stepie22.Logger;
-import io.github.stepie22.networking.Network;
+import io.github.polarizedions.IrcParser.ParsedLine;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -20,15 +18,7 @@ import io.github.stepie22.networking.Network;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public class AutojoinHandler implements IIrcEventHandler {
-
-    @Override
-    public void handle(ParsedLine line) {
-        Network nw = line.originNetwork;
-        String autojoinChannels = nw.getNetworkConfig().autojoinChannels;
-        if (autojoinChannels != null & autojoinChannels.length() > 0) {
-            Logger.getLogger("AutojoinHandler").debug("Autojoining " + autojoinChannels);
-            nw.send("JOIN " + autojoinChannels);
-        }
-    }
+public interface IIrcEventHandler {
+    void handle(ParsedLine line);
+    static String[] getEventNames() { return new String[0]; }
 }
