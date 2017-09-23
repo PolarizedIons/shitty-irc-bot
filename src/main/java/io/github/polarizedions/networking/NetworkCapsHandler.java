@@ -46,7 +46,12 @@ public class NetworkCapsHandler implements IIrcEventHandler {
 
 
                 if (!line.params[2].equals("*")) { // Last line of CAP LS
-                    network.send("CAP REQ :" + String.join(" ", requestedCaps));
+                    if (requestedCaps.size() == 0) {
+                        network.send("CAP END");
+                    }
+                    else {
+                        network.send("CAP REQ :" + String.join(" ", requestedCaps));
+                    }
                 }
 
                 break;
