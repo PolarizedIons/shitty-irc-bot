@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 /**
  * NOTE: Parts of this file is derived from the irc-parser used by irc-framework (https://github.com/kiwiirc/irc-framework)
- * Licence: MIT - https://github.com/kiwiirc/irc-framework/blob/bc564f1509cc9e02bb4ef9fb9712a1eb1952b4ea/LICENSE.txt
+ * Licence: MIT - https://github.com/kiwiirc/irc-framework/blob/cfcc0f9049120e22b1033346f0b197afdc3c18d1/LICENSE.txt
  */
 
 public class Numerics {
