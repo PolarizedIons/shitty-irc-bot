@@ -1,6 +1,7 @@
 package io.github.polarizedions.BotCommands;
 
 import io.github.polarizedions.IrcParser.ParsedLine;
+import io.github.polarizedions.Logger;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -18,7 +19,15 @@ import io.github.polarizedions.IrcParser.ParsedLine;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public interface IBotCommandHandler {
-    void handle(ParsedLine line);
-    String getCommand();
+public class Mimic implements IBotCommandHandler {
+    @Override
+    public void handle(ParsedLine line) {
+        Logger.getLogger("Mimic command").debug(line);
+        line.originNetwork.send("PRIVMSG " + line.params[0] + " :> " + String.join(" ", line.params[1].substring(line.params[1].indexOf(" "))));
+    }
+
+    @Override
+    public String getCommand() {
+        return "mimic";
+    }
 }

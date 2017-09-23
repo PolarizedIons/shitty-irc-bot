@@ -6,8 +6,12 @@ import io.github.polarizedions.IrcParser.ParsedLine;
 import io.github.polarizedions.Logger;
 import io.github.polarizedions.config.Config;
 import io.github.polarizedions.config.ConfigHandler;
+import org.reflections.Reflections;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -30,8 +34,9 @@ public class CommandHandler implements IIrcEventHandler {
 
     private void initHandlers() {
         botCommandHandlers = new HashMap<>();
-
-        botCommandHandlers.put("ping", new PingCommandHandler());
+//
+//        botCommandHandlers.put("ping", new PingCommandHandler());
+        loadBotCommandHandlers();
     }
 
     @Override
@@ -44,11 +49,45 @@ public class CommandHandler implements IIrcEventHandler {
         Config config = ConfigHandler.getConfig();
 
         if (line.params[1].startsWith(config.botPrefix)) {
-            logger.debug("GET: " + line.params[1].replaceFirst(config.botPrefix,"").toLowerCase());
-            IBotCommandHandler commandHandler = botCommandHandlers.get(line.params[1].replaceFirst(config.botPrefix,"").toLowerCase());
+            logger.debug("GET: " + line.params[1].split(" ")[0].replaceFirst(config.botPrefix,"").toLowerCase());
+            IBotCommandHandler commandHandler = botCommandHandlers.get(line.params[1].split(" ")[0].replaceFirst(config.botPrefix,"").toLowerCase());
             if (commandHandler != null) {
                 commandHandler.handle(line);
             }
+        }
+    }
+
+    private void loadBotCommandHandlers() {
+        Reflections reflections = new Reflections("io.github.polarizedions.BotCommands");
+        Set<Class<? extends IBotCommandHandler>> classes = reflections.getSubTypesOf(IBotCommandHandler.class);
+        for (Class<? extends IBotCommandHandler> cls : classes) {
+            IBotCommandHandler commandHandlerInstance;
+            try {
+                commandHandlerInstance = cls.newInstance();
+            } catch (InstantiationException e) {
+                continue;
+            } catch (IllegalAccessException e) {
+                continue;
+            }
+
+            String command;
+            try {
+                Method getCommandMethod = cls.getMethod("getCommand");
+                command = (String) getCommandMethod.invoke(commandHandlerInstance);
+            } catch (NoSuchMethodException e) {
+                continue;
+            } catch (IllegalAccessException e) {
+                continue;
+            } catch (InvocationTargetException e) {
+                continue;
+            }
+
+            if (command == null) {
+                continue;
+            }
+
+            Logger.getLogger("CommandHandler").debug("Adding " + cls.getName() + " to command " + command);
+            botCommandHandlers.put(command, commandHandlerInstance);
         }
     }
 

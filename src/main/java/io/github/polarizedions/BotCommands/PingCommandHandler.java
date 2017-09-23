@@ -23,4 +23,9 @@ public class PingCommandHandler implements IBotCommandHandler {
     public void handle(ParsedLine line) {
         line.originNetwork.send("PRIVMSG " + line.params[0] + " :" + line.nick + ": Pong!");
     }
+
+    @Override
+    public String getCommand() {
+        return "ping";
+    }
 }
