@@ -6,6 +6,8 @@ import io.github.polarizedions.networking.Network;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -40,10 +42,10 @@ public class Command extends ParsedMessage {
         from = msg.from;
         to = msg.to;
         prefix = ConfigHandler.getConfig().botPrefix;
-
-        boolean hasArgs = msg.message.indexOf(" ") != -1;
-        command = hasArgs ? msg.message.substring(prefix.length(), msg.message.indexOf(" ")) : msg.message.substring(prefix.length());
-        args = hasArgs ? msg.message.substring(msg.message.indexOf(" ") + 1).split(" ") : new String[0];
+        Matcher commandMatcher = (Pattern.compile("^" + prefix + "([a-zA-Z]*)(?: (.*))?")).matcher(msg.message);
+        commandMatcher.find();
+        command = commandMatcher.group(1);
+        args = commandMatcher.group(2) == null ? new String[0] : commandMatcher.group(2).split(" ");
         tags = msg.tags;
         originNetwork = msg.originNetwork;
     }
