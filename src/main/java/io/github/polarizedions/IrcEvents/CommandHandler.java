@@ -39,8 +39,6 @@ public class CommandHandler implements IIrcEventHandler {
 
     private void initHandlers() {
         botCommandHandlers = new HashMap<>();
-//
-//        botCommandHandlers.put("ping", new PingCommandHandler());
         loadBotCommandHandlers();
     }
 
@@ -68,9 +66,7 @@ public class CommandHandler implements IIrcEventHandler {
             IBotCommandHandler commandHandlerInstance;
             try {
                 commandHandlerInstance = cls.newInstance();
-            } catch (InstantiationException e) {
-                continue;
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 continue;
             }
 
@@ -78,11 +74,7 @@ public class CommandHandler implements IIrcEventHandler {
             try {
                 Method getCommandMethod = cls.getMethod("getCommand");
                 command = (String) getCommandMethod.invoke(commandHandlerInstance);
-            } catch (NoSuchMethodException e) {
-                continue;
-            } catch (IllegalAccessException e) {
-                continue;
-            } catch (InvocationTargetException e) {
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 continue;
             }
 
@@ -90,7 +82,6 @@ public class CommandHandler implements IIrcEventHandler {
                 continue;
             }
 
-            Logger.getLogger("CommandHandler").debug("Adding " + cls.getName() + " to command " + command);
             botCommandHandlers.put(command, commandHandlerInstance);
         }
     }

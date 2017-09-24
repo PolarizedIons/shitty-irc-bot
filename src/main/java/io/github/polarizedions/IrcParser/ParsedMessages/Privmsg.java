@@ -37,7 +37,7 @@ public class Privmsg extends ParsedMessage {
     }
 
     public void reply(String message) {
-        boolean chanMsg = to != originNetwork.getNetworkConfig().nick;
+        boolean chanMsg = !to.equals(originNetwork.getNetworkConfig().nick);
         if (chanMsg) {
             originNetwork.send("PRIVMSG " + to + " :" + message);
         } else {

@@ -3,6 +3,7 @@ package io.github.polarizedions.networking;
 import io.github.polarizedions.IrcEvents.IIrcEventHandler;
 import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
+import io.github.polarizedions.Logger;
 
 import java.util.ArrayList;
 
@@ -69,6 +70,7 @@ public class NetworkCapsHandler implements IIrcEventHandler {
 
                 break;
             default:
+                Logger.getLogger("NetworkCapsHandler").debug("default route chosen!", line);
                 network.send("CAP END");
         }
     }

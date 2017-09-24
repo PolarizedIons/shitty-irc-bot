@@ -70,7 +70,7 @@ public class NetworkCapabilities {
         return activatedCaps;
     }
 
-    public boolean isSupported(String cap) {
+    public boolean isActive(String cap) {
         if (!locked) {
             return false;
         }

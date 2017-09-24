@@ -55,12 +55,6 @@ public class Network {
     public void connect() {
         networkCapabilities = new NetworkCapabilities();
 
-// TODO: this is temp
-        networkCapabilities.requestCap("userhost-in-names");
-        networkCapabilities.requestCap("multi-prefix");
-        networkCapabilities.requestCap("nonexistant");
-
-
         try {
             socket = new Socket(networkConfig.host, networkConfig.port);
             out = new BufferedOutputStream(socket.getOutputStream());
@@ -144,14 +138,13 @@ public class Network {
                 int loopIters = splitLine.length - (completeLine ? 0 : 1);
                 for (int i = 0; i < loopIters; i++) {
 
+
+                    // TODO: temp
                     ParsedLine parsedLine = parser.parseLine(splitLine[i]);
                     logger.debug("C < S | [" + Numerics.getMappedName(parsedLine.command) + "] | " + splitLine[i]);
                     Handlers.handle(parsedLine);
 
 //                    inBuffer.add(splitLine[i]);
-//                    if (splitLine[i].startsWith("PING ")) {
-//                        send(splitLine[i].replace("PING", "PONG"));
-//                    }
                 }
 
                 inTemp = completeLine ? "" : splitLine[splitLine.length - 1];

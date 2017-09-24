@@ -34,7 +34,6 @@ public class Handlers {
     private static void initMap() {
         handlerMap = new HashMap<>();
 
-        // TODO: addHandler calls here
         loadIrcEventHandlers();
         addHandler("CAP", new NetworkCapsHandler());
     }
@@ -47,11 +46,7 @@ public class Handlers {
             try {
                 Method getEventNamesMethod = cls.getMethod("getEventNames");
                 eventNames = (String[]) getEventNamesMethod.invoke(null);
-            } catch (NoSuchMethodException e) {
-                continue;
-            } catch (IllegalAccessException e) {
-                continue;
-            } catch (InvocationTargetException e) {
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 continue;
             }
 
@@ -62,9 +57,7 @@ public class Handlers {
             IIrcEventHandler handlerInstance;
             try {
                 handlerInstance = cls.newInstance();
-            } catch (InstantiationException e) {
-                continue;
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 continue;
             }
 
