@@ -68,7 +68,6 @@ public class LatestMcVersion implements IBotCommandHandler {
 
     private JSONObject getVersionManifest() {
         try {
-            logger.debug("Current time: %s%n expire time: %s, %s", System.currentTimeMillis(), cacheTime + (CACHE_TIMEOUT * 1000), (cacheTime + (CACHE_TIMEOUT * 1000)) > System.currentTimeMillis());
             if (versionManifestCache != null && (cacheTime + (CACHE_TIMEOUT * 1000)) > System.currentTimeMillis()) {
                 return versionManifestCache;
             }
