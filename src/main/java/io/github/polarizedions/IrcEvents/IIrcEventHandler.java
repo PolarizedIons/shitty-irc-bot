@@ -25,6 +25,7 @@ public interface IIrcEventHandler {
     }
 
     void handle(ParsedMessage line);
+
     default Class getParsedMessageType() {
         return Unparsed.class;
     }
