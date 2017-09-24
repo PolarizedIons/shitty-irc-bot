@@ -4,7 +4,6 @@ import io.github.polarizedions.BotCommands.IBotCommandHandler;
 import io.github.polarizedions.IrcParser.ParsedMessages.Command;
 import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.IrcParser.ParsedMessages.Privmsg;
-import io.github.polarizedions.Logger;
 import io.github.polarizedions.config.Config;
 import io.github.polarizedions.config.ConfigHandler;
 import org.reflections.Reflections;

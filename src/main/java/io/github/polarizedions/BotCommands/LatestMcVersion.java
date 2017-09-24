@@ -9,7 +9,6 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -31,10 +30,9 @@ import java.net.URL;
 public class LatestMcVersion implements IBotCommandHandler {
     private static final String VERSION_MANIFEST_URL = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
     private static final Logger logger = Logger.getLogger("LatestMcVersionCommand");
-
+    private static final int CACHE_TIMEOUT = 60; // Seconds
     private static JSONObject versionManifestCache;
     private static long cacheTime = 0;
-    private static final int CACHE_TIMEOUT = 60; // Seconds
 
     @Override
     public void handle(Command command) {
@@ -45,7 +43,7 @@ public class LatestMcVersion implements IBotCommandHandler {
                         command.reply("%s: Error looking up latest release", command.from.nick);
                         return;
                     }
-                    String result = (String)resultObj[0];
+                    String result = (String) resultObj[0];
                     command.reply("%s: Latest release is %s", command.from.nick, result);
                 });
 
@@ -56,7 +54,7 @@ public class LatestMcVersion implements IBotCommandHandler {
                         command.reply("%s: Error looking up latest snapshot", command.from.nick);
                         return;
                     }
-                    String result = (String)resultObj[0];
+                    String result = (String) resultObj[0];
                     command.reply("%s: Latest snapshot is %s", command.from.nick, result);
                 });
 
@@ -89,7 +87,7 @@ public class LatestMcVersion implements IBotCommandHandler {
             return;
         }
 
-        JSONObject latestVersions = (JSONObject)versionManifest.get("latest");
+        JSONObject latestVersions = (JSONObject) versionManifest.get("latest");
         if (latestVersions == null) {
             cb.reply(null);
             return;
