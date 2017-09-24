@@ -36,12 +36,12 @@ public class Privmsg extends ParsedMessage {
         originNetwork = line.originNetwork;
     }
 
-    public void reply(String message) {
+    public void reply(String message, Object... objects) {
         boolean chanMsg = !to.equals(originNetwork.getNetworkConfig().nick);
         if (chanMsg) {
-            originNetwork.send("PRIVMSG " + to + " :" + message);
+            originNetwork.send("PRIVMSG " + to + " :" + String.format(message, objects));
         } else {
-            originNetwork.send("PRIVMSG " + from.nick + " :" + message);
+            originNetwork.send("PRIVMSG " + from.nick + " :" + String.format(message, objects));
         }
     }
 
