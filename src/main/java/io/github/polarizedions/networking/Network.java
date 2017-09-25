@@ -99,7 +99,7 @@ public class Network {
         if (!isConnected()) {
             return;
         }
-        long msgDelay = 1L / MESSAGE_RATELIMIT * 1000L;
+        long msgDelay = (long)(1d / MESSAGE_RATELIMIT * 1000d);
         int queueSize = outBuffer.size(); // This is just to make sure we don't just keep sending more data as more is added, creating a possible large loop
         for (int i = 0; i < queueSize; i++) {
             String text = outBuffer.remove();
