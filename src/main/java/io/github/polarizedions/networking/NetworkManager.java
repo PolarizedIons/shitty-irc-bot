@@ -31,7 +31,7 @@ public class NetworkManager {
     private Logger logger = Logger.getLogger("NetworkManager");
     private Thread recvThread = new Thread(null, () -> {
         logger.debug("recvThread starting");
-        long iterPause = 1L / THREAD_ITERS_PER_SECOND * 1000L;
+        long iterPause = (long)(1d / THREAD_ITERS_PER_SECOND * 1000d);
         while (true) {
             for (Network nw : getNetworks()) {
                 nw.recvToBuffer();
@@ -46,7 +46,7 @@ public class NetworkManager {
 
     private Thread sendThread = new Thread(null, () -> {
         logger.debug("sendThread starting");
-        long iterPause = 1L / THREAD_ITERS_PER_SECOND * 1000L;
+        long iterPause = (long)(1d / THREAD_ITERS_PER_SECOND * 1000d);
         while (true) {
             for (Network nw : getNetworks()) {
                 nw.sendFromBuffer();
@@ -61,7 +61,7 @@ public class NetworkManager {
 
     private Thread parseThread = new Thread(null, () -> {
         logger.debug("parseThread starting");
-        long iterPause = 1L / THREAD_ITERS_PER_SECOND * 1000L;
+        long iterPause = (long)(1d / THREAD_ITERS_PER_SECOND * 1000d);
         while (true) {
             for (Network nw : getNetworks()) {
                 String line = nw.recv();
