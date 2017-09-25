@@ -1,10 +1,7 @@
 package io.github.polarizedions.networking;
 
 
-import io.github.polarizedions.IrcParser.Handlers;
 import io.github.polarizedions.IrcParser.IrcParser;
-import io.github.polarizedions.IrcParser.Numerics;
-import io.github.polarizedions.IrcParser.ParsedLine;
 import io.github.polarizedions.Logger;
 import io.github.polarizedions.config.NetworkConfig;
 
@@ -33,6 +30,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Network {
     private final int MESSAGE_RATELIMIT = 5;
     private final int SOCKET_READ_BUFFER_SIZE = 1024;
+    protected IrcParser parser;
     private NetworkConfig networkConfig;
     private Socket socket;
     private BufferedOutputStream out;
@@ -41,7 +39,6 @@ public class Network {
     private String inTemp = "";
     private ConcurrentLinkedQueue<String> outBuffer = new ConcurrentLinkedQueue<>();
     private Logger logger;
-    private IrcParser parser;
     private NetworkCapabilities networkCapabilities;
 
     public Network(NetworkConfig networkConfig) {
@@ -94,9 +91,9 @@ public class Network {
         outBuffer.add(text);
     }
 
-//    public String recv() {
-//        return inBuffer.poll(); // Remove the head of the queue & return, or return null if queue is empty
-//    }
+    public String recv() {
+        return inBuffer.poll(); // Remove the head of the queue & return, or return null if queue is empty
+    }
 
     protected void sendFromBuffer() {
         if (!isConnected()) {
@@ -137,14 +134,7 @@ public class Network {
                 boolean completeLine = line.endsWith("\n");
                 int loopIters = splitLine.length - (completeLine ? 0 : 1);
                 for (int i = 0; i < loopIters; i++) {
-
-
-                    // TODO: temp
-                    ParsedLine parsedLine = parser.parseLine(splitLine[i]);
-                    logger.debug("C < S | [" + Numerics.getMappedName(parsedLine.command) + "] | " + splitLine[i]);
-                    Handlers.handle(parsedLine);
-
-//                    inBuffer.add(splitLine[i]);
+                    inBuffer.add(splitLine[i]);
                 }
 
                 inTemp = completeLine ? "" : splitLine[splitLine.length - 1];

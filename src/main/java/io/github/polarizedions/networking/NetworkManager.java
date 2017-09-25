@@ -1,5 +1,8 @@
 package io.github.polarizedions.networking;
 
+import io.github.polarizedions.IrcParser.Handlers;
+import io.github.polarizedions.IrcParser.Numerics;
+import io.github.polarizedions.IrcParser.ParsedLine;
 import io.github.polarizedions.Logger;
 import io.github.polarizedions.config.NetworkConfig;
 
@@ -56,10 +59,32 @@ public class NetworkManager {
         }
     }, "SendThread");
 
+    private Thread parseThread = new Thread(null, () -> {
+        logger.debug("parseThread starting");
+        long iterPause = 1L / THREAD_ITERS_PER_SECOND * 1000L;
+        while (true) {
+            for (Network nw : getNetworks()) {
+                String line = nw.recv();
+                if (line == null) {
+                    continue;
+                }
+                ParsedLine parsedLine = nw.parser.parseLine(line);
+                logger.debug("C < S | [" + Numerics.getMappedName(parsedLine.command) + "] | " + line);
+                Handlers.handle(parsedLine);
+            }
+            try {
+                Thread.sleep(iterPause);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+    }, "ParseThread");
+
     private NetworkManager() {
         logger.debug("Networkmanager starting");
         recvThread.start();
         sendThread.start();
+        parseThread.start();
     }
 
     public ConcurrentLinkedQueue<Network> getNetworks() {
