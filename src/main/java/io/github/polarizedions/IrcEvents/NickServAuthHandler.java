@@ -23,12 +23,12 @@ import io.github.polarizedions.networking.Network;
  **/
 public class NickServAuthHandler implements IIrcEventHandler {
     public static String[] getEventNames() {
-        return new String[] {"NOTICE"};
+        return new String[]{"NOTICE"};
     }
 
     @Override
     public void handle(ParsedMessage line) {
-        Privmsg msg = (Privmsg)line;
+        Privmsg msg = (Privmsg) line;
         Network network = msg.originNetwork;
         NetworkConfig networkConfig = network.getNetworkConfig();
 

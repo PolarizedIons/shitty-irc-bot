@@ -3,6 +3,7 @@ package io.github.polarizedions.IrcEvents;
 import io.github.polarizedions.IrcParser.Numerics;
 import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
+import io.github.polarizedions.Utils;
 import io.github.polarizedions.config.NetworkConfig;
 import io.github.polarizedions.networking.Network;
 import io.github.polarizedions.networking.NetworkCapsHandler;
@@ -10,7 +11,6 @@ import sun.misc.BASE64Encoder;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.stream.Stream;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -35,7 +35,7 @@ public class SaslAuthHandler implements IIrcEventHandler {
     private static HashMap<Network, Boolean> doneWithSasl = new HashMap<>();
 
     public static String[] getEventNames() {
-        return Stream.concat(Stream.concat(Arrays.stream(new String[]{"AUTHENTICATE"}), Arrays.stream(SASL_AUTH_SUCCESS)), Arrays.stream(SASL_AUTH_FAIL)).toArray(String[]::new);
+        return Utils.ConcatArrays(new String[]{"AUTHENTICATE"}, SASL_AUTH_SUCCESS, SASL_AUTH_FAIL);
     }
 
     public static boolean isDone(Network network) {

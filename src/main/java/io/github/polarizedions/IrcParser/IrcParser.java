@@ -1,12 +1,11 @@
 package io.github.polarizedions.IrcParser;
 
+import io.github.polarizedions.Utils;
 import io.github.polarizedions.networking.Network;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -60,7 +59,7 @@ public class IrcParser {
 
         // Add the trailing param to the params list
         if (m.group(8) != null) {
-            tmpParams = Stream.concat(Arrays.stream(tmpParams), Arrays.stream(new String[]{m.group(8)})).toArray(String[]::new);
+            tmpParams = Utils.ConcatArrays(tmpParams, new String[]{m.group(8)});
         }
 
         String[] params = tmpParams;
