@@ -3,9 +3,11 @@ package io.github.polarizedions.networking;
 import io.github.polarizedions.IrcEvents.IIrcEventHandler;
 import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
-import io.github.polarizedions.Logger;
+import io.github.polarizedions.networking.CapConsumers.ICapConsumer;
+import org.reflections.Reflections;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -24,12 +26,46 @@ import java.util.ArrayList;
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 public class NetworkCapsHandler implements IIrcEventHandler {
+    private static ArrayList<ICapConsumer> capConsumers;
+
     public static String[] getEventNames() {
         return new String[]{"CAP"};
     }
 
+    public static void checkDone(Network nw) {
+        if (!nw.getNetworkCapabilities().isLocked()) { // CAP Negotiation isn't done yet
+            return;
+        }
+
+        for (ICapConsumer consumer : capConsumers) {
+            if (!consumer.isDone(nw)) {
+                return;
+            }
+        }
+
+        nw.send("CAP END");
+    }
+
+    public void initConsumers() {
+        capConsumers = new ArrayList<>();
+
+        Reflections reflections = new Reflections("io.github.polarizedions.networking.CapConsumers");
+        Set<Class<? extends ICapConsumer>> classes = reflections.getSubTypesOf(ICapConsumer.class);
+        for (Class<? extends ICapConsumer> cls : classes) {
+            try {
+                capConsumers.add(cls.newInstance());
+            } catch (InstantiationException | IllegalAccessException e) {
+                continue;
+            }
+        }
+    }
+
     @Override
     public void handle(ParsedMessage parsedMessage) {
+        if (capConsumers == null) {
+            initConsumers();
+        }
+
         Unparsed line = (Unparsed) parsedMessage;
 
         Network network = line.originNetwork;
@@ -49,6 +85,9 @@ public class NetworkCapsHandler implements IIrcEventHandler {
 
                 if (!line.params[2].equals("*")) { // Last line of CAP LS
                     if (requestedCaps.size() == 0) {
+                        for (ICapConsumer consumer : capConsumers) {
+                            consumer.onCapNegEnd(network);
+                        }
                         network.send("CAP END");
                     } else {
                         network.send("CAP REQ :" + String.join(" ", requestedCaps));
@@ -66,12 +105,17 @@ public class NetworkCapsHandler implements IIrcEventHandler {
                 networkCaps.lock();
 
                 // Do multiline ACK's exist?
-                network.send("CAP END");
-
+                for (ICapConsumer consumer : capConsumers) {
+                    consumer.onCapNegEnd(network);
+                }
                 break;
+
             default:
-                Logger.getLogger("NetworkCapsHandler").debug("default route chosen!", line);
-                network.send("CAP END");
+                for (ICapConsumer consumer : capConsumers) {
+                    consumer.onCapLine(network, line);
+                }
         }
+
+        checkDone(network);
     }
 }

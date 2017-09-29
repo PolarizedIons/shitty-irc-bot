@@ -1,6 +1,8 @@
-package io.github.polarizedions.config;
+package io.github.polarizedions.networking.CapConsumers;
 
-import java.util.List;
+import io.github.polarizedions.IrcEvents.SaslAuthHandler;
+import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
+import io.github.polarizedions.networking.Network;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -18,11 +20,27 @@ import java.util.List;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public class Config {
-    public List networkConfigs;
-    public int logLevel;
-    public String botPrefix;
-    public String openweatherApi;
+public class SaslCapConsumer implements ICapConsumer {
+    @Override
+    public void onCapLine(Network network, Unparsed line) {
+
+    }
+
+    @Override
+    public void onCapNegEnd(Network network) {
+        if (!network.getNetworkConfig().SASLAuth.equals("true") || !network.getNetworkCapabilities().isActive("sasl")) {
+            return;
+        }
+
+        network.send("AUTHENTICATE PLAIN");
+    }
+
+    @Override
+    public boolean isDone(Network network) {
+        if (!network.getNetworkConfig().SASLAuth.equals("true") || !network.getNetworkCapabilities().isActive("sasl")) {
+            return true;
+        }
+
+        return SaslAuthHandler.isDone(network);
+    }
 }
-
-

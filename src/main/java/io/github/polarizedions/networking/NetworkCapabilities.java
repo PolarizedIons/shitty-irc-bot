@@ -58,6 +58,10 @@ public class NetworkCapabilities {
         locked = true;
     }
 
+    public boolean isLocked() {
+        return locked;
+    }
+
     public ArrayList<String> getRequestedCaps() {
         return requestedCaps;
     }

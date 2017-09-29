@@ -79,13 +79,13 @@ public class ConfigHandler {
         freenode.gecos = "PolarizedBot";
         freenode.realname = "PolarizedIons's bot";
         freenode.autojoinChannels = "##PolarizedSpam";
+        freenode.loginUser = "";
+        freenode.loginPass = "";
+        freenode.nickServAuth = "false";
+        freenode.SASLAuth = "false";
         config.networkConfigs.add(freenode);
 
         config.logLevel = Logger.LOG_LEVEL.INFO;
-        config.loginUser = "";
-        config.loginPass = "";
-        config.nickServAuth = "false";
-        config.SASLAuth = "false";
         config.botPrefix = "!";
         config.openweatherApi = "";
 

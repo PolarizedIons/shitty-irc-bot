@@ -40,18 +40,20 @@ public class Network {
     private ConcurrentLinkedQueue<String> outBuffer = new ConcurrentLinkedQueue<>();
     private Logger logger;
     private NetworkCapabilities networkCapabilities;
+    private boolean isAuthed = false;
 
     public Network(NetworkConfig networkConfig) {
         this.networkConfig = networkConfig;
         logger = Logger.getLogger(String.format("Network(%s)", networkConfig.host));
         parser = new IrcParser(this);
+        networkCapabilities = new NetworkCapabilities();
 
-
+        if (networkConfig.SASLAuth.equals("true")) {
+            networkCapabilities.requestCap("sasl");
+        }
     }
 
     public void connect() {
-        networkCapabilities = new NetworkCapabilities();
-
         try {
             socket = new Socket(networkConfig.host, networkConfig.port);
             out = new BufferedOutputStream(socket.getOutputStream());
@@ -151,6 +153,14 @@ public class Network {
 
     public NetworkCapabilities getNetworkCapabilities() {
         return networkCapabilities;
+    }
+
+    public boolean isAuthed() {
+        return isAuthed;
+    }
+
+    public void setAuthed(boolean authed) {
+        isAuthed = authed;
     }
 
     @Override

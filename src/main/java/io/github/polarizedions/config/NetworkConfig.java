@@ -24,4 +24,8 @@ public class NetworkConfig {
     public String gecos;
     public String realname;
     public String autojoinChannels;
+    public String loginUser;
+    public String loginPass;
+    public String nickServAuth;
+    public String SASLAuth;
 }
