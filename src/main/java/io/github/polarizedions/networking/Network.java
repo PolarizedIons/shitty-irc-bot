@@ -63,6 +63,9 @@ public class Network {
             e.printStackTrace();
         }
 
+        if (networkConfig.serverPass.length() > 0) {
+            send("PASS " + networkConfig.serverPass);
+        }
         send("CAP LS 302");
         send("NICK " + networkConfig.nick);
         send("USER " + networkConfig.gecos + " 0 * :" + networkConfig.realname);
