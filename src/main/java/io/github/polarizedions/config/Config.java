@@ -26,6 +26,7 @@ public class Config {
     public String nickServAuth;
     public String SASLAuth;
     public String botPrefix;
+    public String openweatherApi;
 }
 
 

@@ -87,6 +87,7 @@ public class ConfigHandler {
         config.nickServAuth = "false";
         config.SASLAuth = "false";
         config.botPrefix = "!";
+        config.openweatherApi = "";
 
         logger.debug("Default config set!");
     }
