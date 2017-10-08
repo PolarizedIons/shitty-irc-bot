@@ -1,6 +1,5 @@
 package io.github.polarizedions.IrcEvents;
 
-import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.IrcParser.ParsedMessages.Ping;
 
 /**
@@ -19,17 +18,12 @@ import io.github.polarizedions.IrcParser.ParsedMessages.Ping;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public class PingHandler implements IIrcEventHandler {
+public class PingHandler implements IIrcEventHandler<Ping> {
     public static String[] getEventNames() {
         return new String[]{"PING"};
     }
 
-    public void handle(ParsedMessage ping) {
-        ((Ping) ping).pong();
-    }
-
-    @Override
-    public Class getParsedMessageType() {
-        return Ping.class;
+    public void handle(Ping ping) {
+        ping.pong();
     }
 }

@@ -1,7 +1,6 @@
 package io.github.polarizedions.IrcEvents;
 
 import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
-import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -19,14 +18,10 @@ import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public interface IIrcEventHandler {
+public interface IIrcEventHandler<T extends ParsedMessage> {
     static String[] getEventNames() {
         return new String[0];
     }
 
-    void handle(ParsedMessage line);
-
-    default Class getParsedMessageType() {
-        return Unparsed.class;
-    }
+    void handle(T line);
 }

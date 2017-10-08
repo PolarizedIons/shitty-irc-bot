@@ -7,6 +7,7 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,11 +88,12 @@ public class Handlers {
         for (IIrcEventHandler handler : handlers) {
             ParsedMessage parsedMessageInstance;
             try {
-                parsedMessageInstance = (ParsedMessage) handler.getParsedMessageType().getConstructor(ParsedLine.class).newInstance(line);
+                Class messageType = (Class<?>) ((ParameterizedType) (handler.getClass().getGenericInterfaces()[0])).getActualTypeArguments()[0];
+                parsedMessageInstance = (ParsedMessage) messageType.getConstructor(ParsedLine.class).newInstance(line);
+                handler.handle(parsedMessageInstance);
             } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 continue;
             }
-            handler.handle(parsedMessageInstance);
         }
     }
 }

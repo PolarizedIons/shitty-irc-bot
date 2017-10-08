@@ -1,6 +1,5 @@
 package io.github.polarizedions.IrcEvents;
 
-import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.IrcParser.ParsedMessages.Privmsg;
 import io.github.polarizedions.config.NetworkConfig;
 import io.github.polarizedions.networking.Network;
@@ -21,14 +20,13 @@ import io.github.polarizedions.networking.Network;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public class NickServAuthHandler implements IIrcEventHandler {
+public class NickServAuthHandler implements IIrcEventHandler<Privmsg> {
     public static String[] getEventNames() {
         return new String[]{"NOTICE"};
     }
 
     @Override
-    public void handle(ParsedMessage line) {
-        Privmsg msg = (Privmsg) line;
+    public void handle(Privmsg msg) {
         Network network = msg.originNetwork;
         NetworkConfig networkConfig = network.getNetworkConfig();
 
@@ -48,10 +46,5 @@ public class NickServAuthHandler implements IIrcEventHandler {
         if (msg.message.contains("are now identified for") || msg.message.contains("you are now recognized")) {
             network.setAuthed(true);
         }
-    }
-
-    @Override
-    public Class getParsedMessageType() {
-        return Privmsg.class;
     }
 }

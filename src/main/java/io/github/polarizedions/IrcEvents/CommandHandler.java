@@ -2,7 +2,6 @@ package io.github.polarizedions.IrcEvents;
 
 import io.github.polarizedions.BotCommands.IBotCommandHandler;
 import io.github.polarizedions.IrcParser.ParsedMessages.Command;
-import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.IrcParser.ParsedMessages.Privmsg;
 import io.github.polarizedions.config.Config;
 import io.github.polarizedions.config.ConfigHandler;
@@ -29,7 +28,7 @@ import java.util.Set;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public class CommandHandler implements IIrcEventHandler {
+public class CommandHandler implements IIrcEventHandler<Privmsg> {
     private HashMap<String, IBotCommandHandler> botCommandHandlers;
 
     public static String[] getEventNames() {
@@ -42,12 +41,11 @@ public class CommandHandler implements IIrcEventHandler {
     }
 
     @Override
-    public void handle(ParsedMessage line) {
+    public void handle(Privmsg msg) {
         if (botCommandHandlers == null) {
             initHandlers();
         }
 
-        Privmsg msg = (Privmsg) line;
         Config config = ConfigHandler.getConfig();
 
         if (msg.message.startsWith(config.botPrefix)) {
@@ -83,10 +81,5 @@ public class CommandHandler implements IIrcEventHandler {
 
             botCommandHandlers.put(command, commandHandlerInstance);
         }
-    }
-
-    @Override
-    public Class getParsedMessageType() {
-        return Privmsg.class;
     }
 }

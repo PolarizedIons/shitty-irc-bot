@@ -1,7 +1,6 @@
 package io.github.polarizedions.IrcEvents;
 
 import io.github.polarizedions.IrcParser.Numerics;
-import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
 import io.github.polarizedions.Utils;
 import io.github.polarizedions.config.NetworkConfig;
@@ -28,7 +27,7 @@ import java.util.HashMap;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public class SaslAuthHandler implements IIrcEventHandler {
+public class SaslAuthHandler implements IIrcEventHandler<Unparsed> {
     private static final String[] SASL_AUTH_SUCCESS = new String[]{"RPL_LOGGEDIN", "RPL_SASLSUCCESS", "ERR_SASLALREADY", "RPL_SASLAUTHENTICATED", "RPL_SASLLOGGEDIN"};
     private static final String[] SASL_AUTH_FAIL = new String[]{"ERR_NICKLOCKED", "ERR_SASLFAIL", "ERR_SASLTOOLONG", "ERR_SASLABORTED", "RPL_SASLMECHS", "ERR_SASLNOTAUTHORISED"};
 
@@ -47,8 +46,7 @@ public class SaslAuthHandler implements IIrcEventHandler {
     }
 
     @Override
-    public void handle(ParsedMessage msg) {
-        Unparsed line = (Unparsed) msg;
+    public void handle(Unparsed line) {
         Network network = line.originNetwork;
 
         if (!network.getNetworkConfig().SASLAuth.equals("true") || !network.getNetworkCapabilities().isActive("sasl")) {
@@ -85,10 +83,5 @@ public class SaslAuthHandler implements IIrcEventHandler {
             NetworkCapsHandler.checkDone(network);
             return;
         }
-    }
-
-    @Override
-    public Class getParsedMessageType() {
-        return Unparsed.class;
     }
 }

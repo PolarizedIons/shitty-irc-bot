@@ -1,6 +1,5 @@
 package io.github.polarizedions.IrcEvents;
 
-import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
 import io.github.polarizedions.Logger;
 import io.github.polarizedions.networking.Network;
@@ -21,15 +20,15 @@ import io.github.polarizedions.networking.Network;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public class AutojoinHandler implements IIrcEventHandler {
+public class AutojoinHandler implements IIrcEventHandler<Unparsed> {
 
     public static String[] getEventNames() {
         return new String[]{"RPL_ENDOFMOTD", "ERR_NOMOTD"};
     }
 
     @Override
-    public void handle(ParsedMessage parsedMessage) {
-        Unparsed line = (Unparsed) parsedMessage;
+    public void handle(Unparsed parsedMessage) {
+        Unparsed line = parsedMessage;
         Network nw = line.originNetwork;
         String autojoinChannels = nw.getNetworkConfig().autojoinChannels;
         if (autojoinChannels != null & autojoinChannels.length() > 0) {

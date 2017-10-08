@@ -1,7 +1,6 @@
 package io.github.polarizedions.networking;
 
 import io.github.polarizedions.IrcEvents.IIrcEventHandler;
-import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
 import io.github.polarizedions.networking.CapConsumers.ICapConsumer;
 import org.reflections.Reflections;
@@ -25,7 +24,7 @@ import java.util.Set;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public class NetworkCapsHandler implements IIrcEventHandler {
+public class NetworkCapsHandler implements IIrcEventHandler<Unparsed> {
     private static ArrayList<ICapConsumer> capConsumers;
 
     public static String[] getEventNames() {
@@ -61,12 +60,10 @@ public class NetworkCapsHandler implements IIrcEventHandler {
     }
 
     @Override
-    public void handle(ParsedMessage parsedMessage) {
+    public void handle(Unparsed line) {
         if (capConsumers == null) {
             initConsumers();
         }
-
-        Unparsed line = (Unparsed) parsedMessage;
 
         Network network = line.originNetwork;
         NetworkCapabilities networkCaps = network.getNetworkCapabilities();
