@@ -1,6 +1,6 @@
 package io.github.polarizedions.IrcParser;
 
-import io.github.polarizedions.IrcEvents.IIrcEventHandler;
+import io.github.polarizedions.IrcEvents.IMessageHandler;
 import io.github.polarizedions.IrcParser.ParsedMessages.ParsedMessage;
 import io.github.polarizedions.networking.NetworkCapsHandler;
 import org.reflections.Reflections;
@@ -30,7 +30,7 @@ import java.util.Set;
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 public class Handlers {
-    private static HashMap<String, List<IIrcEventHandler>> handlerMap;
+    private static HashMap<String, List<IMessageHandler>> handlerMap;
 
     private static void initMap() {
         handlerMap = new HashMap<>();
@@ -41,8 +41,8 @@ public class Handlers {
 
     private static void loadIrcEventHandlers() {
         Reflections reflections = new Reflections("io.github.polarizedions.IrcEvents");
-        Set<Class<? extends IIrcEventHandler>> classes = reflections.getSubTypesOf(IIrcEventHandler.class);
-        for (Class<? extends IIrcEventHandler> cls : classes) {
+        Set<Class<? extends IMessageHandler>> classes = reflections.getSubTypesOf(IMessageHandler.class);
+        for (Class<? extends IMessageHandler> cls : classes) {
             String[] eventNames;
             try {
                 Method getEventNamesMethod = cls.getMethod("getEventNames");
@@ -55,7 +55,7 @@ public class Handlers {
                 continue;
             }
 
-            IIrcEventHandler handlerInstance;
+            IMessageHandler handlerInstance;
             try {
                 handlerInstance = cls.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
@@ -68,7 +68,7 @@ public class Handlers {
         }
     }
 
-    public static void addHandler(String numeric, IIrcEventHandler handler) {
+    public static void addHandler(String numeric, IMessageHandler handler) {
         handlerMap.putIfAbsent(numeric, new ArrayList<>());
         handlerMap.get(numeric).add(handler);
     }
@@ -80,12 +80,12 @@ public class Handlers {
 
         String numeric = Numerics.getMappedName(line.command);
 
-        List<IIrcEventHandler> handlers = handlerMap.get(numeric);
+        List<IMessageHandler> handlers = handlerMap.get(numeric);
         if (handlers == null) {
             return;
         }
 
-        for (IIrcEventHandler handler : handlers) {
+        for (IMessageHandler handler : handlers) {
             ParsedMessage parsedMessageInstance;
             try {
                 Class messageType = (Class<?>) ((ParameterizedType) (handler.getClass().getGenericInterfaces()[0])).getActualTypeArguments()[0];
