@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 public class Command extends ParsedMessage {
     public final User from;
     public final String to;
+    public final boolean toChannel;
     public final String prefix;
     public final String command;
     public final String[] args;
@@ -41,6 +42,7 @@ public class Command extends ParsedMessage {
     public Command(Privmsg msg) {
         from = msg.from;
         to = msg.to;
+        toChannel = !to.equals(msg.originNetwork.getNetworkConfig().nick);
         prefix = ConfigHandler.getConfig().botPrefix;
         Matcher commandMatcher = (Pattern.compile("^" + prefix + "([a-zA-Z]*)(?: (.*))?")).matcher(msg.message);
         commandMatcher.find();
@@ -51,8 +53,7 @@ public class Command extends ParsedMessage {
     }
 
     public void reply(String message, Object... objects) {
-        boolean chanMsg = !to.equals(originNetwork.getNetworkConfig().nick);
-        if (chanMsg) {
+        if (toChannel) {
             originNetwork.send("PRIVMSG " + to + " :" + String.format(message, objects));
         } else {
             originNetwork.send("PRIVMSG " + from.nick + " :" + String.format(message, objects));

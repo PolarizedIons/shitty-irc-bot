@@ -24,6 +24,7 @@ import java.util.HashMap;
 public class Privmsg extends ParsedMessage {
     public final User from;
     public final String to;
+    public final boolean toChannel;
     public final String message;
     public final HashMap<String, String> tags;
     public final Network originNetwork;
@@ -31,14 +32,14 @@ public class Privmsg extends ParsedMessage {
     public Privmsg(ParsedLine line) {
         from = new User(line.nick, line.ident, line.hostname);
         to = line.params[0];
+        toChannel = !to.equals(line.originNetwork.getNetworkConfig().nick);
         message = line.params[1];
         tags = line.tags;
         originNetwork = line.originNetwork;
     }
 
     public void reply(String message, Object... objects) {
-        boolean chanMsg = !to.equals(originNetwork.getNetworkConfig().nick);
-        if (chanMsg) {
+        if (toChannel) {
             originNetwork.send("PRIVMSG " + to + " :" + String.format(message, objects));
         } else {
             originNetwork.send("PRIVMSG " + from.nick + " :" + String.format(message, objects));
