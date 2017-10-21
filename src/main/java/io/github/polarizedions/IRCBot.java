@@ -5,6 +5,11 @@ import io.github.polarizedions.config.ConfigHandler;
 import io.github.polarizedions.config.NetworkConfig;
 import io.github.polarizedions.networking.NetworkManager;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * Copyright 2017 PolarizedIons
  * <p>
@@ -22,13 +27,28 @@ import io.github.polarizedions.networking.NetworkManager;
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 public class IRCBot {
+    public static final Path STORAGE_DIR = Paths.get(".", "storage");
+
     public static final IRCBot bot = new IRCBot();
-    public final NetworkManager networkManager = NetworkManager.instance;
-    public final Logger logger = Logger.getLogger("Bot");
-    public final Config config = ConfigHandler.getConfig();
+    public final NetworkManager networkManager;
+    public final Logger logger;
+    public final Config config;
 
     private IRCBot() {
+        logger = Logger.getLogger("Bot");
         logger.info("Starting irc bot.");
+        System.out.println(STORAGE_DIR);
+        if (!Files.exists(STORAGE_DIR)) {
+            try {
+                Files.createDirectory(STORAGE_DIR);
+            } catch (IOException e) {
+                logger.error("Error creating storage directory! Your config will *not* be able to be saved!");
+                e.printStackTrace();
+            }
+        }
+
+        networkManager = NetworkManager.instance;
+        config = ConfigHandler.getConfig();
 
         for (Object nwConfig : config.networkConfigs) {
             networkManager.addNetwork((NetworkConfig) nwConfig);

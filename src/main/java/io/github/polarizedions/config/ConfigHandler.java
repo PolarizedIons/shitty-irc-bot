@@ -2,9 +2,11 @@ package io.github.polarizedions.config;
 
 import com.esotericsoftware.yamlbeans.YamlReader;
 import com.esotericsoftware.yamlbeans.YamlWriter;
+import io.github.polarizedions.IRCBot;
 import io.github.polarizedions.Logger;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -29,7 +31,7 @@ public class ConfigHandler {
     private static Logger logger = Logger.getLogger("ConfigHandler");
 
     public static Config loadConfig() {
-        File f = new File("botconfig.yaml");
+        File f = Paths.get(IRCBot.STORAGE_DIR.toString(), "botconfig.yaml").toFile();
 
         if (!f.exists()) {
             setDefaultConfig();
@@ -94,7 +96,7 @@ public class ConfigHandler {
 
     public static void save() {
         try {
-            YamlWriter yamlWriter = new YamlWriter(new FileWriter(new File("botconfig.yaml")));
+            YamlWriter yamlWriter = new YamlWriter(new FileWriter(Paths.get(IRCBot.STORAGE_DIR.toString(), "botconfig.yaml").toFile()));
             yamlWriter.write(config);
             yamlWriter.close();
         } catch (IOException e) {
