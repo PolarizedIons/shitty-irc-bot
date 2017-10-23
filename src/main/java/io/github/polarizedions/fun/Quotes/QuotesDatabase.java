@@ -2,12 +2,9 @@ package io.github.polarizedions.fun.Quotes;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.field.DataType;
-import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.DatabaseTable;
 import com.j256.ormlite.table.TableUtils;
 import io.github.polarizedions.IRCBot;
 import io.github.polarizedions.Logger;
@@ -15,8 +12,6 @@ import io.github.polarizedions.Logger;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -39,8 +34,8 @@ import java.util.Random;
 
 class QuotesDatabase {
     private static final Logger logger = Logger.getLogger("QuotesDatabase");
-    private static ConnectionSource connectionSource;
     public static Dao<Quote, Integer> quotesDao;
+    private static ConnectionSource connectionSource;
 
     public static void connect() {
         String dbPath = Paths.get(IRCBot.STORAGE_DIR.toString(), "quotes.db").toAbsolutePath().toString();
@@ -122,9 +117,9 @@ class QuotesDatabase {
         try {
             statementBuilder
                     .where()
-                        .like(Quote.NICK_FIELD, user)
-                        .and()
-                        .like(Quote.MESSAGE_FIELD, "%" + containing + "%");
+                    .like(Quote.NICK_FIELD, user)
+                    .and()
+                    .like(Quote.MESSAGE_FIELD, "%" + containing + "%");
 
             return quotesDao.query(statementBuilder.prepare());
 
@@ -144,7 +139,7 @@ class QuotesDatabase {
                     .limit(1L)
                     .orderBy(Quote.QUOTE_ID_FIELD, false)
                     .where()
-                        .like(Quote.NICK_FIELD, nick);
+                    .like(Quote.NICK_FIELD, nick);
 
             List<Quote> result = quotesDao.query(statementBuilder.prepare());
 

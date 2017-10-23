@@ -26,6 +26,7 @@ import java.util.Arrays;
  **/
 public class QuotesCommandHandler implements IBotCommandHandler {
     private final String COMMAND_USAGE = ConfigHandler.getConfig().botPrefix + getCommand() + " random OR save <nick> <quote filter> OR get <nick> [quote #] OR find <nick> [quote filter]";
+
     @Override
     public void handle(Command command) {
         if (command.args.length < 2) {
@@ -36,7 +37,7 @@ public class QuotesCommandHandler implements IBotCommandHandler {
             }
         }
 
-        switch(command.args[0]) {
+        switch (command.args[0]) {
             case "save":
                 save(command);
                 break;
@@ -47,7 +48,7 @@ public class QuotesCommandHandler implements IBotCommandHandler {
                 find(command);
                 break;
             case "random":
-                 random(command);
+                random(command);
                 break;
             default:
                 command.reply("%s: Unknown second argument '%s'. Usage: %s", command.from.nick, command.args[0], COMMAND_USAGE);
@@ -91,8 +92,7 @@ public class QuotesCommandHandler implements IBotCommandHandler {
             int quoteID;
             try {
                 quoteID = Integer.parseInt(quoteNum);
-            }
-            catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 command.reply("%s: '%s' is not a number, did you mean to use the find command?", command.from.nick, quoteNum);
                 return;
             }
@@ -104,8 +104,7 @@ public class QuotesCommandHandler implements IBotCommandHandler {
             }
 
             command.reply("%s: %s", command.from.nick, quote.toString());
-        }
-        else {
+        } else {
             Quote quote = QuotesManager.findQuote(nick);
 
             if (quote == null) {
@@ -132,12 +131,10 @@ public class QuotesCommandHandler implements IBotCommandHandler {
             if (nick.equals("%")) {
                 command.reply("%s: Could not find a quote containing '%s'", command.from.nick, filterText);
                 return;
-            }
-            else if (filterText.isEmpty()) {
+            } else if (filterText.isEmpty()) {
                 command.reply("%s: Could not find a quote by '%s'", command.from.nick, nick);
                 return;
-            }
-            else {
+            } else {
                 command.reply("%s: Could not find a quote by '%s' containing '%s'", command.from.nick, nick, filterText);
                 return;
             }

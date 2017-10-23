@@ -38,6 +38,7 @@ public class QuotesManager {
             QuotesDatabase.connect();
         }
     }
+
     public static void handleChannelMessage(Privmsg line) {
         ensureInit();
 
@@ -73,7 +74,7 @@ public class QuotesManager {
             e.printStackTrace();
         }
 
-        return null ;
+        return null;
     }
 
     public static Quote findQuote(String nick) {
