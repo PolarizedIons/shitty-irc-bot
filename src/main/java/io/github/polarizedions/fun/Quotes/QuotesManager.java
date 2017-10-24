@@ -29,19 +29,11 @@ import java.util.Random;
 public class QuotesManager {
     private static final int MESSAGE_QUEUE_SIZE = 200;
 
-    private static HashMap<String, EvictingQueue<Privmsg>> messageQueues;
+    private static HashMap<String, EvictingQueue<Privmsg>> messageQueues = new HashMap<>();
     private static Logger logger = Logger.getLogger("QuotesManager");
 
-    private static void ensureInit() {
-        if (messageQueues == null) {
-            messageQueues = new HashMap<>();
-            QuotesDatabase.connect();
-        }
-    }
 
     public static void handleChannelMessage(Privmsg line) {
-        ensureInit();
-
         if (!messageQueues.containsKey(line.to)) {
             messageQueues.put(line.to, EvictingQueue.create(MESSAGE_QUEUE_SIZE));
         }
@@ -63,8 +55,6 @@ public class QuotesManager {
     }
 
     public static Quote saveQuote(Privmsg line) {
-        ensureInit();
-
         Quote quote = new Quote(line.to, line.from.nick, line.message);
         try {
             QuotesDatabase.quotesDao.create(quote);
@@ -78,8 +68,6 @@ public class QuotesManager {
     }
 
     public static Quote findQuote(String nick) {
-        ensureInit();
-
         List<Quote> quotes = QuotesDatabase.find(nick, "");
         if (quotes == null || quotes.size() == 0) {
             return null;
@@ -89,8 +77,6 @@ public class QuotesManager {
     }
 
     public static Quote findQuote(String nick, String containing) {
-        ensureInit();
-
         List<Quote> quotes = QuotesDatabase.find(nick, containing);
         if (quotes == null || quotes.size() == 0) {
             return null;
@@ -100,14 +86,10 @@ public class QuotesManager {
     }
 
     public static Quote getQuote(String nick, int id) {
-        ensureInit();
-
         return QuotesDatabase.getByID(nick, id);
     }
 
     public static Quote getRandomQuote() {
-        ensureInit();
-
         return QuotesDatabase.getRandom();
     }
 }

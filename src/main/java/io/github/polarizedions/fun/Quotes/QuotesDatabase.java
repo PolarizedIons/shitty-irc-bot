@@ -37,6 +37,12 @@ class QuotesDatabase {
     public static Dao<Quote, Integer> quotesDao;
     private static ConnectionSource connectionSource;
 
+    private static void ensureConnected() {
+        if (connectionSource == null) {
+            connect();
+        }
+    }
+
     public static void connect() {
         String dbPath = Paths.get(IRCBot.STORAGE_DIR.toString(), "quotes.db").toAbsolutePath().toString();
         try {
@@ -61,6 +67,8 @@ class QuotesDatabase {
     }
 
     public static Quote getRandom() {
+        ensureConnected();
+
         QueryBuilder<Quote, Integer> statementBuilder = quotesDao.queryBuilder();
 
         try {
@@ -87,6 +95,8 @@ class QuotesDatabase {
     }
 
     public static Quote getByID(String user, int id) {
+        ensureConnected();
+
         QueryBuilder<Quote, Integer> statementBuilder = quotesDao.queryBuilder();
 
         try {
@@ -112,6 +122,8 @@ class QuotesDatabase {
     }
 
     public static List<Quote> find(String user, String containing) {
+        ensureConnected();
+
         QueryBuilder<Quote, Integer> statementBuilder = quotesDao.queryBuilder();
 
         try {
@@ -131,6 +143,8 @@ class QuotesDatabase {
     }
 
     public static int nextQuoteId(String nick) {
+        ensureConnected();
+
         QueryBuilder<Quote, Integer> statementBuilder = quotesDao.queryBuilder();
 
         try {

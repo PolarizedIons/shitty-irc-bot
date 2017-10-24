@@ -117,7 +117,7 @@ public class QuotesCommandHandler implements IBotCommandHandler {
     }
 
 
-    public void find(Command command) {
+    private void find(Command command) {
         String nick = command.args[1];
         String filterText = command.args.length > 2 ? String.join(" ", Arrays.copyOfRange(command.args, 2, command.args.length)) : "";
 
@@ -143,7 +143,7 @@ public class QuotesCommandHandler implements IBotCommandHandler {
         command.reply("%s: %s", command.from.nick, quote.toString());
     }
 
-    public void random(Command command) {
+    private void random(Command command) {
         Quote quote = QuotesManager.getRandomQuote();
 
         if (quote == null) {
