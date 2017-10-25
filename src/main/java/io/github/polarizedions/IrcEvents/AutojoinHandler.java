@@ -31,7 +31,7 @@ public class AutojoinHandler implements IMessageHandler<Unparsed> {
         Unparsed line = parsedMessage;
         Network nw = line.originNetwork;
         String autojoinChannels = nw.getNetworkConfig().autojoinChannels;
-        if (autojoinChannels != null & autojoinChannels.length() > 0) {
+        if (autojoinChannels != null && autojoinChannels.length() > 0) {
             Logger.getLogger("AutojoinHandler").debug("Autojoining " + autojoinChannels);
             nw.send("JOIN " + autojoinChannels);
         }
