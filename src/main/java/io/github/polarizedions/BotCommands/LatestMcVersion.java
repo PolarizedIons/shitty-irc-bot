@@ -2,7 +2,7 @@ package io.github.polarizedions.BotCommands;
 
 import io.github.polarizedions.IrcParser.ParsedMessages.Command;
 import io.github.polarizedions.Logger;
-import io.github.polarizedions.Utils;
+import io.github.polarizedions.Utils.Callback;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -80,7 +80,7 @@ public class LatestMcVersion implements IBotCommandHandler {
         }
     }
 
-    private void lookupLatest(String releaseType, Utils.Callback cb) {
+    private void lookupLatest(String releaseType, Callback cb) {
         JSONObject versionManifest = getVersionManifest();
         if (versionManifest == null) {
             cb.reply(null);

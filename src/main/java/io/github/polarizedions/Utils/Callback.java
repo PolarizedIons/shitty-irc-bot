@@ -1,7 +1,4 @@
-package io.github.polarizedions;
-
-import java.util.Arrays;
-import java.util.stream.Stream;
+package io.github.polarizedions.Utils;
 
 /**
  * Copyright 2017 PolarizedIons
@@ -19,18 +16,6 @@ import java.util.stream.Stream;
  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
-public class Utils {
-
-    public static String[] ConcatArrays(String[]... arrays) {
-        Stream result = Stream.empty();
-        for (String[] arr : arrays) {
-            result = Stream.concat(result, Arrays.stream(arr));
-        }
-
-        return (String[]) result.toArray(String[]::new);
-    }
-
-    public interface Callback {
-        void reply(Object... result);
-    }
+public interface Callback {
+    void reply(Object... result);
 }

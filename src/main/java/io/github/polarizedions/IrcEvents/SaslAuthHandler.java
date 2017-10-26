@@ -2,7 +2,7 @@ package io.github.polarizedions.IrcEvents;
 
 import io.github.polarizedions.IrcParser.Numerics;
 import io.github.polarizedions.IrcParser.ParsedMessages.Unparsed;
-import io.github.polarizedions.Utils;
+import io.github.polarizedions.Utils.ArrayUtils;
 import io.github.polarizedions.config.NetworkConfig;
 import io.github.polarizedions.networking.Network;
 import io.github.polarizedions.networking.NetworkCapsHandler;
@@ -34,7 +34,7 @@ public class SaslAuthHandler implements IMessageHandler<Unparsed> {
     private static HashMap<Network, Boolean> doneWithSasl = new HashMap<>();
 
     public static String[] getEventNames() {
-        return Utils.ConcatArrays(new String[]{"AUTHENTICATE"}, SASL_AUTH_SUCCESS, SASL_AUTH_FAIL);
+        return ArrayUtils.ConcatArrays(new String[]{"AUTHENTICATE"}, SASL_AUTH_SUCCESS, SASL_AUTH_FAIL);
     }
 
     public static boolean isDone(Network network) {

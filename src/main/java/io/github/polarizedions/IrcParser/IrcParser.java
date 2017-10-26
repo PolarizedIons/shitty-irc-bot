@@ -1,6 +1,6 @@
 package io.github.polarizedions.IrcParser;
 
-import io.github.polarizedions.Utils;
+import io.github.polarizedions.Utils.ArrayUtils;
 import io.github.polarizedions.networking.Network;
 
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public class IrcParser {
 
         // Add the trailing param to the params list
         if (m.group(8) != null) {
-            tmpParams = Utils.ConcatArrays(tmpParams, new String[]{m.group(8)});
+            tmpParams = ArrayUtils.ConcatArrays(tmpParams, new String[]{m.group(8)});
         }
 
         String[] params = tmpParams;

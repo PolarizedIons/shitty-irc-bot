@@ -2,7 +2,7 @@ package io.github.polarizedions.BotCommands;
 
 import io.github.polarizedions.IrcParser.ParsedMessages.Command;
 import io.github.polarizedions.Logger;
-import io.github.polarizedions.Utils;
+import io.github.polarizedions.Utils.Callback;
 import io.github.polarizedions.config.ConfigHandler;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
@@ -130,7 +130,7 @@ public class Weather implements IBotCommandHandler {
         return "?";
     }
 
-    private void getWeather(String location, Utils.Callback cb) {
+    private void getWeather(String location, Callback cb) {
         JSONObject weather = null;
         try {
             String url = "http://api.openweathermap.org/data/2.5/weather?q=" + URLEncoder.encode(location, "UTF-8") + "&APPID=" + URLEncoder.encode(apiKey, "UTF-8");
