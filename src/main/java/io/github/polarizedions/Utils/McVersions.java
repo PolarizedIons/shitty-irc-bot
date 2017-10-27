@@ -43,6 +43,8 @@ public class McVersions {
             cacheTime = System.currentTimeMillis();
             versionManifestCache = versionManifest;
 
+            logger.debug("Latest mc versions: " + versionManifest.get("latest").toString());
+
             return versionManifest;
         } catch (ParseException | IOException e) {
             logger.error("Error looking up the version manifest!");
