@@ -170,4 +170,8 @@ public class Network {
     public String toString() {
         return "Network<host: '" + networkConfig.host + "', port: " + networkConfig.port + ">";
     }
+
+    public String getName() {
+        return networkConfig.name;
+    }
 }

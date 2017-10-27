@@ -6,6 +6,8 @@ import io.github.polarizedions.IrcParser.ParsedLine;
 import io.github.polarizedions.Logger;
 import io.github.polarizedions.config.NetworkConfig;
 
+import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -27,7 +29,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class NetworkManager {
     public static final NetworkManager instance = new NetworkManager();
     private final int THREAD_ITERS_PER_SECOND = 10;
-    private ConcurrentLinkedQueue<Network> networks = new ConcurrentLinkedQueue<>();
+    private ConcurrentHashMap<String, Network> networks = new ConcurrentHashMap<>();
     private Logger logger = Logger.getLogger("NetworkManager");
     private Thread recvThread = new Thread(null, () -> {
         logger.debug("recvThread starting");
@@ -87,14 +89,14 @@ public class NetworkManager {
         parseThread.start();
     }
 
-    public ConcurrentLinkedQueue<Network> getNetworks() {
-        return networks;
+    public Collection<Network> getNetworks() {
+        return networks.values();
     }
 
     public Network addNetwork(NetworkConfig nwConfig) {
         logger.debug("Adding network " + nwConfig.host + ":" + nwConfig.port);
         Network nw = new Network(nwConfig);
-        networks.add(nw);
+        networks.put(nw.getName(), nw);
 
         return nw;
     }
@@ -109,5 +111,9 @@ public class NetworkManager {
         for (Network nw : getNetworks()) {
             nw.disconnect();
         }
+    }
+
+    public Network getNetwork(String name) {
+        return networks.get(name);
     }
 }

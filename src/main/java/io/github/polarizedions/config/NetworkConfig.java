@@ -17,6 +17,7 @@ package io.github.polarizedions.config;
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 public class NetworkConfig {
+    public String name;
     public String host;
     public int port;
     public String nick;

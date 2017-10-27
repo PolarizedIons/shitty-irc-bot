@@ -74,6 +74,7 @@ public class ConfigHandler {
 
         config.networkConfigs = new ArrayList();
         NetworkConfig freenode = new NetworkConfig();
+        freenode.name = "freenode";
         freenode.host = "irc.freenode.net";
         freenode.port = 6667;
         freenode.nick = "PolarizedBot";
