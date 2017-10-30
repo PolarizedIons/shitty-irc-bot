@@ -31,10 +31,12 @@ public class NetworkManager {
     private final int THREAD_ITERS_PER_SECOND = 10;
     private ConcurrentHashMap<String, Network> networks = new ConcurrentHashMap<>();
     private Logger logger = Logger.getLogger("NetworkManager");
+    private boolean shouldRun = true;
+
     private Thread recvThread = new Thread(null, () -> {
         logger.debug("recvThread starting");
         long iterPause = (long) (1d / THREAD_ITERS_PER_SECOND * 1000d);
-        while (true) {
+        while (shouldRun) {
             for (Network nw : getNetworks()) {
                 nw.recvToBuffer();
             }
@@ -49,7 +51,7 @@ public class NetworkManager {
     private Thread sendThread = new Thread(null, () -> {
         logger.debug("sendThread starting");
         long iterPause = (long) (1d / THREAD_ITERS_PER_SECOND * 1000d);
-        while (true) {
+        while (shouldRun) {
             for (Network nw : getNetworks()) {
                 nw.sendFromBuffer();
             }
@@ -64,7 +66,7 @@ public class NetworkManager {
     private Thread parseThread = new Thread(null, () -> {
         logger.debug("parseThread starting");
         long iterPause = (long) (1d / THREAD_ITERS_PER_SECOND * 1000d);
-        while (true) {
+        while (shouldRun) {
             for (Network nw : getNetworks()) {
                 String line = nw.recv();
                 if (line == null) {
@@ -110,6 +112,25 @@ public class NetworkManager {
     public void disconnectAll() {
         for (Network nw : getNetworks()) {
             nw.disconnect();
+        }
+    }
+
+    public void shutdown() {
+        for (Network nw : getNetworks()) {
+            nw.disconnect();
+        }
+        try {
+            Thread.sleep((long) (1d / THREAD_ITERS_PER_SECOND * 1000d) * 2L );
+        } catch (InterruptedException e) {
+        }
+
+        shouldRun = false;
+        try {
+            recvThread.join();
+            sendThread.join();
+            parseThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

@@ -75,10 +75,6 @@ public class Network {
         try {
             out.write("QUIT :Bye!".getBytes());
             out.flush();
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-            }
             socket.close();
             in.close();
             out.close();

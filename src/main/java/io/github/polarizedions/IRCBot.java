@@ -63,4 +63,8 @@ public class IRCBot {
     public void start() {
         networkManager.connectAll();
     }
+
+    public void shutdown() {
+        networkManager.shutdown();
+    }
 }
